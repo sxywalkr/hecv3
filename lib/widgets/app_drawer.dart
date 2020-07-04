@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/user_beritas_screen.dart';
-// import '../screens/orders_screen.dart';
-// import '../screens/user_products_screen.dart';
 import '../providers/auth.dart';
+
+import '../screens/user_beritas_screen.dart';
+import '../screens/app_users_overview_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -24,15 +24,15 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed('/');
             },
           ),
-          // Divider(),
-          // ListTile(
-          //   leading: Icon(Icons.payment),
-          //   title: Text('Orders'),
-          //   onTap: () {
-          //     Navigator.of(context)
-          //         .pushReplacementNamed(OrdersScreen.routeName);
-          //   },
-          // ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.people),
+            title: Text('Manage App User'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(AppUsersOverviewScreen.routeName);
+            },
+          ),
           Divider(),
           ListTile(
             leading: Icon(Icons.edit),

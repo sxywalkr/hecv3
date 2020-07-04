@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hec/providers/app_users.dart';
 import 'package:hec/screens/beritas_overview_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +8,8 @@ import './screens/auth_screen.dart';
 // import './screens/app_home_screen.dart';
 import './screens/user_beritas_screen.dart';
 import './screens/edit_berita_screen.dart';
+import './screens/app_users_overview_screen.dart';
+import './screens/edit_app_user_screen.dart';
 // import './screens/products_overview_screen.dart';
 // import './screens/product_detail_screen.dart';
 // import './screens/cart_screen.dart';
@@ -39,6 +42,14 @@ class MyApp extends StatelessWidget {
             auth.token,
             auth.userId,
             prevBeritas == null ? [] : prevBeritas.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, AppUsers>(
+          // create: (_) => Products(null, null),
+          update: (ctx, auth, prevAppUsers) => AppUsers(
+            auth.token,
+            auth.userId,
+            prevAppUsers == null ? [] : prevAppUsers.items,
           ),
         ),
         // ChangeNotifierProxyProvider<Auth, Products>(
@@ -86,6 +97,8 @@ class MyApp extends StatelessWidget {
           routes: {
             UserBeritasScreen.routeName: (ctx) => UserBeritasScreen(),
             EditBeritaScreen.routeName: (ctx) => EditBeritaScreen(),
+            AppUsersOverviewScreen.routeName: (ctx) => AppUsersOverviewScreen(),
+            EditAppUserScreen.routeName: (ctx) => EditAppUserScreen(),
             // ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             // CartScreen.routeName: (ctx) => CartScreen(),
             // OrdersScreen.routeName: (ctx) => OrdersScreen(),
