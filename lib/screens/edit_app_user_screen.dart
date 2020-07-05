@@ -105,7 +105,7 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
         await Provider.of<AppUsers>(context, listen: false)
             .addAppUser(_editedProduct);
       } catch (error) {
-        print(_editedProduct.tanggalLahir);
+        // print(_editedProduct.tanggalLahir);
         await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(

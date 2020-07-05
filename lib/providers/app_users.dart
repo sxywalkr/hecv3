@@ -58,7 +58,29 @@ class AppUsers with ChangeNotifier {
   }
 
   Future<void> addAppUser(AppUser appUser) async {
-    // print(json.decode(appUser));
+    String userId;
+    final urlAuth =
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAae_dFFc3lAE_kWE-qP25GtJAI1JuFTtE';
+    try {
+      final response = await http.post(
+        urlAuth,
+        body: json.encode(
+          {
+            'email': appUser.email,
+            'password': '12345678',
+            'returnSecureToken': true,
+          },
+        ),
+      );
+      final responseData = json.decode(response.body);
+      if (responseData['error'] != null) {
+        throw HttpException(responseData['error']['message']);
+      }
+      userId = responseData['localId'];
+    } catch (error) {
+      throw error;
+    }
+
     final url = 'https://fdev-hec.firebaseio.com/appUsers.json?auth=$authToken';
     try {
       final response = await http.post(
@@ -87,7 +109,8 @@ class AppUsers with ChangeNotifier {
         alamat: appUser.alamat,
         tanggalLahir: appUser.tanggalLahir,
         appUserRole: appUser.appUserRole,
-        appUserId: json.decode(response.body)['name'],
+        // appUserId: json.decode(response.body)['name'],
+        appUserId: userId,
       );
       _items.add(newAppUser);
       notifyListeners();
