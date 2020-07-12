@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/auth.dart';
 
 import '../screens/user_beritas_screen.dart';
+import '../screens/app_users_manage_screen.dart';
 import '../screens/app_users_overview_screen.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -26,11 +27,20 @@ class AppDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
+            leading: Icon(Icons.person_pin),
+            title: Text('Overview App User'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(AppUsersOverviewScreen.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
             leading: Icon(Icons.people),
             title: Text('Manage App User'),
             onTap: () {
               Navigator.of(context)
-                  .pushReplacementNamed(AppUsersOverviewScreen.routeName);
+                  .pushReplacementNamed(AppUsersManageScreen.routeName);
             },
           ),
           Divider(),

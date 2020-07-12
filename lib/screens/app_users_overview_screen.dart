@@ -1,62 +1,88 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/app_users.dart';
-import '../screens/edit_app_user_screen.dart';
 import '../widgets/app_drawer.dart';
-import '../widgets/app_user_item.dart';
+import '../widgets/app_users_grid.dart';
+// import '../widgets/badge.dart';
+// import './cart_screen.dart';
+// import '../providers/cart.dart';
+import '../providers/app_users.dart';
 
-class AppUsersOverviewScreen extends StatelessWidget {
-  static const routeName = '/app-users-overview';
+enum FilterOptions {
+  Favorites,
+  All,
+}
 
-  Future<void> _refreshProducts(BuildContext context) async {
-    await Provider.of<AppUsers>(context, listen: false).fetchAndSetAppUsers();
+class AppUsersOverviewScreen extends StatefulWidget {
+  static const routeName = '/app-user-overview';
+
+  @override
+  _AppUsersOverviewScreenState createState() => _AppUsersOverviewScreenState();
+}
+
+class _AppUsersOverviewScreenState extends State<AppUsersOverviewScreen> {
+  var _showOnlyFav = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    // Future.delayed(Duration.zero).then((_) {
+    //   Provider.of<Products>(context).fetchAndSetProducts();
+    // });
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<AppUsers>(context)
+          .fetchAndSetAppUsers()
+          .then((_) => setState(() {
+                _isLoading = false;
+              }));
+    }
+    _isInit = false;
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Application User'),
+        title: Text('Overview App User'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).pushNamed(EditAppUserScreen.routeName);
+          PopupMenuButton(
+            onSelected: (FilterOptions selectedValue) {
+              setState(() {
+                if (selectedValue == FilterOptions.Favorites) {
+                  _showOnlyFav = true;
+                } else {
+                  _showOnlyFav = false;
+                }
+              });
             },
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                  child: Text('Only Favorites'),
+                  value: FilterOptions.Favorites),
+              PopupMenuItem(
+                child: Text('Show All'),
+                value: FilterOptions.All,
+              )
+            ],
+            icon: Icon(Icons.more_vert),
           ),
         ],
       ),
       drawer: AppDrawer(),
-      body: FutureBuilder(
-        future: _refreshProducts(context),
-        builder: (ctx, snapshot) =>
-            snapshot.connectionState == ConnectionState.waiting
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : RefreshIndicator(
-                    onRefresh: () => _refreshProducts(context),
-                    child: Consumer<AppUsers>(
-                      builder: (ctx, data, _) => Padding(
-                        padding: EdgeInsets.all(8),
-                        child: ListView.builder(
-                          itemCount: data.items.length,
-                          itemBuilder: (_, index) {
-                            return Column(
-                              children: [
-                                AppUserItem(
-                                    data.items[index].appUserId,
-                                    data.items[index].nama,
-                                    data.items[index].noRmHec),
-                                Divider(),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-      ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : AppUsersGrid(_showOnlyFav),
     );
   }
 }

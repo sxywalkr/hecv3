@@ -8,10 +8,11 @@ import './screens/auth_screen.dart';
 // import './screens/app_home_screen.dart';
 import './screens/user_beritas_screen.dart';
 import './screens/edit_berita_screen.dart';
-import './screens/app_users_overview_screen.dart';
 import './screens/edit_app_user_screen.dart';
+import './screens/app_users_manage_screen.dart';
+import './screens/app_users_overview_screen.dart';
 // import './screens/products_overview_screen.dart';
-// import './screens/product_detail_screen.dart';
+import './screens/app_user_detail_screen.dart';
 // import './screens/cart_screen.dart';
 // import './screens/orders_screen.dart';
 // import './screens/user_products_screen.dart';
@@ -97,13 +98,10 @@ class MyApp extends StatelessWidget {
           routes: {
             UserBeritasScreen.routeName: (ctx) => UserBeritasScreen(),
             EditBeritaScreen.routeName: (ctx) => EditBeritaScreen(),
-            AppUsersOverviewScreen.routeName: (ctx) => AppUsersOverviewScreen(),
+            AppUsersManageScreen.routeName: (ctx) => AppUsersManageScreen(),
             EditAppUserScreen.routeName: (ctx) => EditAppUserScreen(),
-            // ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-            // CartScreen.routeName: (ctx) => CartScreen(),
-            // OrdersScreen.routeName: (ctx) => OrdersScreen(),
-            // UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
-            // EditProductScreen.routeName: (ctx) => EditProductScreen(),
+            AppUsersOverviewScreen.routeName: (ctx) => AppUsersOverviewScreen(),
+            AppUserDetailScreen.routeName: (ctx) => AppUserDetailScreen(),
           },
         ),
       ),

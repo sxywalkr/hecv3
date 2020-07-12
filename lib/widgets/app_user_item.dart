@@ -1,55 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/app_users.dart';
-import '../screens/edit_app_user_screen.dart';
+import '../providers/auth.dart';
+import '../providers/app_user.dart';
+// import '../providers/cart.dart';
+import '../screens/app_user_detail_screen.dart';
 
 class AppUserItem extends StatelessWidget {
-  final String id;
-  final String nama;
-  final String imageUrl;
-
-  AppUserItem(this.id, this.nama, this.imageUrl);
-
   @override
   Widget build(BuildContext context) {
-    final scaffold = Scaffold.of(context);
-
-    return ListTile(
-      title: Text(nama),
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(imageUrl),
-      ),
-      trailing: Container(
-        width: 100,
-        child: Row(children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.edit),
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-              Navigator.of(context).pushNamed(
-                EditAppUserScreen.routeName,
-                arguments: id,
-              );
-            },
+    final appUser = Provider.of<AppUser>(context, listen: false);
+    // final cart = Provider.of<Cart>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: GridTile(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed(AppUserDetailScreen.routeName,
+                arguments: appUser.appUserId);
+          },
+          child: Image.asset(
+            'assets/images/men.png',
+            // appUser.imageUrl,
+            fit: BoxFit.cover,
           ),
-          IconButton(
-            icon: Icon(Icons.delete),
-            color: Theme.of(context).errorColor,
-            onPressed: () async {
-              try {
-                await Provider.of<AppUsers>(context, listen: false)
-                    .deleteAppUser(id);
-              } catch (error) {
-                scaffold.showSnackBar(SnackBar(
-                  content: Text(
-                    'Deleting failed',
-                    textAlign: TextAlign.center,
-                  ),
-                ));
-              }
-            },
+        ),
+        footer: GridTileBar(
+          backgroundColor: Colors.black87,
+          // leading: Consumer<AppUser>(
+          //   builder: (ctx, appUser, child) => IconButton(
+          //     icon: Icon(Icons.favorite_border),
+          //     onPressed: () {
+          //       // appUser.toggleFavoriteStatus(
+          //       //   authData.token,
+          //       //   authData.userId,
+          //       // );
+          //     },
+          //     color: Theme.of(context).accentColor,
+          //   ),
+          // ),
+          title: Text(
+            appUser.nama,
+            textAlign: TextAlign.center,
           ),
-        ]),
+          // trailing: IconButton(
+          //   icon: Icon(Icons.shopping_cart),
+          //   onPressed: () {
+          //     // cart.addItem(appUser.id, appUser.price, appUser.title);
+          //     // Scaffold.of(context).hideCurrentSnackBar();
+          //     // Scaffold.of(context).showSnackBar(
+          //     //   SnackBar(
+          //     //     content: Text('Add item to the cart'),
+          //     //     duration: Duration(seconds: 7),
+          //     //     action: SnackBarAction(
+          //     //         label: 'UNDO',
+          //     //         onPressed: () {
+          //     //           cart.removeSingleItem(appUser.id);
+          //     //         }),
+          //     //   ),
+          //     // );
+          //   },
+          //   color: Theme.of(context).accentColor,
+          // ),
+        ),
       ),
     );
   }
