@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hec/providers/app_users.dart';
-import 'package:hec/screens/beritas_overview_screen.dart';
 import 'package:provider/provider.dart';
 
 import './screens/splash_screen.dart';
 import './screens/auth_screen.dart';
-// import './screens/app_home_screen.dart';
+import './screens/beritas_overview_screen.dart';
 import './screens/user_beritas_screen.dart';
 import './screens/edit_berita_screen.dart';
 import './screens/edit_app_user_screen.dart';
@@ -20,6 +18,9 @@ import './screens/app_user_detail_screen.dart';
 
 import './providers/auth.dart';
 import './providers/beritas.dart';
+import './providers/antrian.dart';
+import './providers/antrians.dart';
+import './providers/app_users.dart';
 // import './providers/products.dart';
 // import './providers/orders.dart';
 // import './providers/cart.dart';
@@ -51,6 +52,22 @@ class MyApp extends StatelessWidget {
             auth.token,
             auth.userId,
             prevAppUsers == null ? [] : prevAppUsers.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, Antrians>(
+          // create: (_) => Products(null, null),
+          update: (ctx, auth, prevAppUsers) => Antrians(
+            auth.token,
+            auth.userId,
+            prevAppUsers == null ? [] : prevAppUsers.antriansItem,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, Antrian>(
+          // create: (_) => Products(null, null),
+          update: (ctx, auth, prevAppUsers) => Antrian(
+            auth.token,
+            auth.userId,
+            prevAppUsers == null ? [] : prevAppUsers.item,
           ),
         ),
         // ChangeNotifierProxyProvider<Auth, Products>(

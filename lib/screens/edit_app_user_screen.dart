@@ -28,6 +28,8 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
     gender: '',
     alamat: '',
     tanggalLahir: DateTime.now(),
+    flagActivity: '',
+    statusAppUser: '',
     appUserRole: '',
   );
 
@@ -40,8 +42,10 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
     'noHape': '',
     'gender': '',
     'alamat': '',
-    'tanggalLahir': '',
-    'appUserRole': '',
+    'tanggalLahir': 'Jan 1, 1990',
+    'statusAppUser': 'BPJS',
+    'flagActivity': 'idle',
+    'appUserRole': 'Anom',
   };
 
   @override
@@ -69,6 +73,7 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
           'noHape': _editedProduct.noHape,
           'gender': _editedProduct.gender,
           'alamat': _editedProduct.alamat,
+          'statusAppUser': _editedProduct.statusAppUser,
           'tanggalLahir':
               DateFormat.yMMMd().format(_editedProduct.tanggalLahir),
           'appUserRole': _editedProduct.appUserRole,
@@ -176,6 +181,8 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
                           gender: _editedProduct.gender,
                           alamat: _editedProduct.alamat,
                           tanggalLahir: _editedProduct.tanggalLahir,
+                          statusAppUser: _editedProduct.statusAppUser,
+                          flagActivity: 'idle',
                           appUserRole: _editedProduct.appUserRole,
                         );
                       },
@@ -205,6 +212,8 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
                           gender: _editedProduct.gender,
                           alamat: _editedProduct.alamat,
                           tanggalLahir: _editedProduct.tanggalLahir,
+                          statusAppUser: _editedProduct.statusAppUser,
+                          flagActivity: 'idle',
                           appUserRole: _editedProduct.appUserRole,
                         );
                       },
@@ -235,6 +244,8 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
                           gender: _editedProduct.gender,
                           alamat: _editedProduct.alamat,
                           tanggalLahir: _editedProduct.tanggalLahir,
+                          statusAppUser: _editedProduct.statusAppUser,
+                          flagActivity: 'idle',
                           appUserRole: _editedProduct.appUserRole,
                         );
                       },
@@ -264,6 +275,8 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
                           gender: _editedProduct.gender,
                           alamat: _editedProduct.alamat,
                           tanggalLahir: _editedProduct.tanggalLahir,
+                          statusAppUser: _editedProduct.statusAppUser,
+                          flagActivity: 'idle',
                           appUserRole: _editedProduct.appUserRole,
                         );
                       },
@@ -293,6 +306,8 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
                           gender: _editedProduct.gender,
                           alamat: _editedProduct.alamat,
                           tanggalLahir: _editedProduct.tanggalLahir,
+                          statusAppUser: _editedProduct.statusAppUser,
+                          flagActivity: 'idle',
                           appUserRole: _editedProduct.appUserRole,
                         );
                       },
@@ -322,6 +337,8 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
                           gender: _editedProduct.gender,
                           alamat: _editedProduct.alamat,
                           tanggalLahir: _editedProduct.tanggalLahir,
+                          statusAppUser: _editedProduct.statusAppUser,
+                          flagActivity: 'idle',
                           appUserRole: _editedProduct.appUserRole,
                         );
                       },
@@ -351,6 +368,8 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
                           gender: value,
                           alamat: _editedProduct.alamat,
                           tanggalLahir: _editedProduct.tanggalLahir,
+                          statusAppUser: _editedProduct.statusAppUser,
+                          flagActivity: 'idle',
                           appUserRole: _editedProduct.appUserRole,
                         );
                       },
@@ -380,6 +399,8 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
                           gender: _editedProduct.gender,
                           alamat: value,
                           tanggalLahir: _editedProduct.tanggalLahir,
+                          statusAppUser: _editedProduct.statusAppUser,
+                          flagActivity: 'idle',
                           appUserRole: _editedProduct.appUserRole,
                         );
                       },
@@ -410,6 +431,39 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
                           alamat: _editedProduct.alamat,
                           // tanggalLahir: DateFormat.yMMMd().parse(value),
                           tanggalLahir: DateFormat.yMMMd().parse(value),
+                          statusAppUser: _editedProduct.statusAppUser,
+                          flagActivity: 'idle',
+                          appUserRole: _editedProduct.appUserRole,
+                        );
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: _initValues['statusAppUser'],
+                      decoration: InputDecoration(labelText: 'Status'),
+                      textInputAction: TextInputAction.next,
+                      // onFieldSubmitted: (_) {
+                      //   FocusScope.of(context).requestFocus(_priceFocusNode);
+                      // },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please provide a value';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _editedProduct = AppUser(
+                          appUserId: _editedProduct.appUserId,
+                          nama: _editedProduct.nama,
+                          email: _editedProduct.email,
+                          noRmHec: _editedProduct.noRmHec,
+                          noKtp: _editedProduct.noKtp,
+                          noBpjs: _editedProduct.noBpjs,
+                          noHape: _editedProduct.noHape,
+                          gender: _editedProduct.gender,
+                          alamat: _editedProduct.alamat,
+                          tanggalLahir: _editedProduct.tanggalLahir,
+                          statusAppUser: value,
+                          flagActivity: 'idle',
                           appUserRole: _editedProduct.appUserRole,
                         );
                       },
@@ -439,6 +493,8 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
                           gender: _editedProduct.gender,
                           alamat: _editedProduct.alamat,
                           tanggalLahir: _editedProduct.tanggalLahir,
+                          statusAppUser: _editedProduct.statusAppUser,
+                          flagActivity: 'idle',
                           appUserRole: value,
                         );
                       },

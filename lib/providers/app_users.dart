@@ -25,14 +25,14 @@ class AppUsers with ChangeNotifier {
         filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     var url =
         'https://fdev-hec.firebaseio.com/appUsers.json?auth=$authToken&$filterString';
-    // print(url);
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      // print(url);
+      // print(json.decode(response.body));
       if (extractedData == null) {
         return;
       }
-      // print(json.decode(response.body));
       final List<AppUser> loadedAppUsers = [];
       extractedData.forEach((id, data) {
         loadedAppUsers.add(AppUser(
@@ -46,6 +46,8 @@ class AppUsers with ChangeNotifier {
           gender: data['gender'],
           alamat: data['alamat'],
           tanggalLahir: DateTime.parse(data['tanggalLahir']),
+          statusAppUser: data['statusAppUser'],
+          flagActivity: data['flagActivity'],
           appUserRole: data['appUserRole'],
         ));
       });
@@ -53,6 +55,7 @@ class AppUsers with ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
+      print(error);
       throw (error);
     }
   }
@@ -76,14 +79,16 @@ class AppUsers with ChangeNotifier {
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
+      // print(responseData);
       userId = responseData['localId'];
     } catch (error) {
       throw error;
     }
 
-    final url = 'https://fdev-hec.firebaseio.com/appUsers.json?auth=$authToken';
+    final url =
+        'https://fdev-hec.firebaseio.com/appUsers/$userId.json?auth=$authToken';
     try {
-      final response = await http.post(
+      await http.put(
         url,
         body: json.encode({
           'nama': appUser.nama,
@@ -95,6 +100,8 @@ class AppUsers with ChangeNotifier {
           'gender': appUser.gender,
           'alamat': appUser.alamat,
           'tanggalLahir': appUser.tanggalLahir.toIso8601String(),
+          'statusAppUser': appUser.statusAppUser,
+          'flagActivity': appUser.flagActivity,
           'appUserRole': appUser.appUserRole,
         }),
       );
@@ -108,6 +115,8 @@ class AppUsers with ChangeNotifier {
         gender: appUser.gender,
         alamat: appUser.alamat,
         tanggalLahir: appUser.tanggalLahir,
+        statusAppUser: appUser.statusAppUser,
+        flagActivity: appUser.flagActivity,
         appUserRole: appUser.appUserRole,
         // appUserId: json.decode(response.body)['name'],
         appUserId: userId,
@@ -137,6 +146,7 @@ class AppUsers with ChangeNotifier {
           'gender': updData.gender,
           'alamat': updData.alamat,
           'tanggalLahir': updData.tanggalLahir.toIso8601String(),
+          // 'statusAppUser': 'BPJS',
           'appUserRole': updData.appUserRole,
         }),
       );

@@ -10,14 +10,14 @@ class AppUsersGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<AppUsers>(context);
-    final products = productsData.items;
+    final itemsData = Provider.of<AppUsers>(context);
+    final items = itemsData.items;
 
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
-      itemCount: products.length,
+      itemCount: items.length,
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
-        value: products[index],
+        value: items[index],
         child: AppUserItem(),
       ),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

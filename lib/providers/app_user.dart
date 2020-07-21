@@ -13,6 +13,8 @@ class AppUser with ChangeNotifier {
   final String gender;
   final String alamat;
   final DateTime tanggalLahir;
+  final String statusAppUser; //BPJS atau UMUM
+  final String flagActivity; //status activity appUser
   final String appUserRole;
 
   AppUser({
@@ -26,6 +28,8 @@ class AppUser with ChangeNotifier {
     @required this.gender,
     @required this.alamat,
     @required this.tanggalLahir,
+    @required this.statusAppUser,
+    @required this.flagActivity,
     @required this.appUserRole,
   });
 }

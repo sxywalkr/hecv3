@@ -53,29 +53,29 @@ class _AppUsersOverviewScreenState extends State<AppUsersOverviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Overview App User'),
-        actions: <Widget>[
-          PopupMenuButton(
-            onSelected: (FilterOptions selectedValue) {
-              setState(() {
-                if (selectedValue == FilterOptions.Favorites) {
-                  _showOnlyFav = true;
-                } else {
-                  _showOnlyFav = false;
-                }
-              });
-            },
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                  child: Text('Only Favorites'),
-                  value: FilterOptions.Favorites),
-              PopupMenuItem(
-                child: Text('Show All'),
-                value: FilterOptions.All,
-              )
-            ],
-            icon: Icon(Icons.more_vert),
-          ),
-        ],
+        // actions: <Widget>[
+        //   PopupMenuButton(
+        //     onSelected: (FilterOptions selectedValue) {
+        //       setState(() {
+        //         if (selectedValue == FilterOptions.Favorites) {
+        //           _showOnlyFav = true;
+        //         } else {
+        //           _showOnlyFav = false;
+        //         }
+        //       });
+        //     },
+        //     itemBuilder: (_) => [
+        //       PopupMenuItem(
+        //           child: Text('Only Favorites'),
+        //           value: FilterOptions.Favorites),
+        //       PopupMenuItem(
+        //         child: Text('Show All'),
+        //         value: FilterOptions.All,
+        //       )
+        //     ],
+        //     icon: Icon(Icons.more_vert),
+        //   ),
+        // ],
       ),
       drawer: AppDrawer(),
       body: _isLoading
