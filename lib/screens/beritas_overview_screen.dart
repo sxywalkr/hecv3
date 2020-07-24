@@ -51,43 +51,43 @@ class _BeritasOverviewScreenState extends State<BeritasOverviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Klinik Mata Hasanuddin'),
-        actions: <Widget>[
-          PopupMenuButton(
-            onSelected: (FilterOptions selectedValue) {
-              setState(() {
-                if (selectedValue == FilterOptions.Favorites) {
-                  _showOnlyFav = true;
-                } else {
-                  _showOnlyFav = false;
-                }
-              });
-            },
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                  child: Text('Only Favorites'),
-                  value: FilterOptions.Favorites),
-              PopupMenuItem(
-                child: Text('Show All'),
-                value: FilterOptions.All,
-              )
-            ],
-            icon: Icon(Icons.more_vert),
-          ),
-          // Consumer<Cart>(
-          //   builder: (_a, carts, ch) => Badge(
-          //     child: ch,
-          //     value: carts.itemCount.toString(),
-          //   ),
-          //   child: IconButton(
-          //     icon: Icon(
-          //       Icons.shopping_cart,
-          //     ),
-          //     onPressed: () {
-          //       Navigator.of(context).pushNamed(CartScreen.routeName);
-          //     },
-          //   ),
-          // ),
-        ],
+        // actions: <Widget>[
+        //   PopupMenuButton(
+        //     onSelected: (FilterOptions selectedValue) {
+        //       setState(() {
+        //         if (selectedValue == FilterOptions.Favorites) {
+        //           _showOnlyFav = true;
+        //         } else {
+        //           _showOnlyFav = false;
+        //         }
+        //       });
+        //     },
+        //     itemBuilder: (_) => [
+        //       PopupMenuItem(
+        //           child: Text('Only Favorites'),
+        //           value: FilterOptions.Favorites),
+        //       PopupMenuItem(
+        //         child: Text('Show All'),
+        //         value: FilterOptions.All,
+        //       )
+        //     ],
+        //     icon: Icon(Icons.more_vert),
+        //   ),
+        // Consumer<Cart>(
+        //   builder: (_a, carts, ch) => Badge(
+        //     child: ch,
+        //     value: carts.itemCount.toString(),
+        //   ),
+        //   child: IconButton(
+        //     icon: Icon(
+        //       Icons.shopping_cart,
+        //     ),
+        //     onPressed: () {
+        //       Navigator.of(context).pushNamed(CartScreen.routeName);
+        //     },
+        //   ),
+        // ),
+        // ],
       ),
       drawer: AppDrawer(),
       body: _isLoading

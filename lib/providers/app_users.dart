@@ -13,7 +13,7 @@ class AppUsers with ChangeNotifier {
   AppUsers(this.authToken, this.userId, this._items);
 
   List<AppUser> get items {
-    return [..._items];
+    return [..._items..sort((a, b) => a.nama.compareTo(b.nama))];
   }
 
   AppUser findById(String id) {

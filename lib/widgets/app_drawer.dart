@@ -10,11 +10,13 @@ import '../screens/app_users_overview_screen.dart';
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final userRole = Provider.of<Auth>(context).userRole;
+
     return Drawer(
       child: Column(
         children: <Widget>[
           AppBar(
-            title: Text('Hello Fren'),
+            title: Text('$userRole'),
             automaticallyImplyLeading: false,
           ),
           Divider(),
@@ -25,33 +27,39 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed('/');
             },
           ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.person_pin),
-            title: Text('Overview App User'),
-            onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(AppUsersOverviewScreen.routeName);
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.people),
-            title: Text('Manage App User'),
-            onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(AppUsersManageScreen.routeName);
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Manage Berita'),
-            onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(UserBeritasScreen.routeName);
-            },
-          ),
+          userRole == 'App Admin' ? Divider() : SizedBox(height: 1),
+          userRole == 'App Admin'
+              ? ListTile(
+                  leading: Icon(Icons.person_pin),
+                  title: Text('Overview App User'),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(AppUsersOverviewScreen.routeName);
+                  },
+                )
+              : SizedBox(height: 1),
+          userRole == 'App Admin' ? Divider() : SizedBox(height: 1),
+          userRole == 'App Admin'
+              ? ListTile(
+                  leading: Icon(Icons.people),
+                  title: Text('Manage App User'),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(AppUsersManageScreen.routeName);
+                  },
+                )
+              : SizedBox(height: 1),
+          userRole == 'App Admin' ? Divider() : SizedBox(height: 1),
+          userRole == 'App Admin'
+              ? ListTile(
+                  leading: Icon(Icons.edit),
+                  title: Text('Manage Berita'),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(UserBeritasScreen.routeName);
+                  },
+                )
+              : SizedBox(height: 1),
           Divider(),
           ListTile(
             leading: Icon(Icons.exit_to_app),

@@ -21,8 +21,8 @@ class AppUsersGrid extends StatelessWidget {
         child: AppUserItem(),
       ),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 3 / 2,
+          crossAxisCount: 2,
+          childAspectRatio: 4 / 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10),
     );

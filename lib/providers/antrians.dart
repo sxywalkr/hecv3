@@ -25,11 +25,121 @@ class Antrians with ChangeNotifier {
   List<AntriansItem> _antriansItem = [];
   final String authToken;
   final String userId;
+  final String authToken2;
 
-  Antrians(this.authToken, this.userId, this._antriansItem);
+  Antrians(this.authToken, this.userId, this.authToken2, this._antriansItem);
 
   List<AntriansItem> get antriansItem {
     return [..._antriansItem];
+  }
+
+  Future<void> setKamarOperasi(DateTime queryTanggalAntri, dataUser) async {
+    // print(authToken);
+    // print(authToken2);
+    final qDate = queryTanggalAntri.toIso8601String().substring(0, 10);
+    final qAppUserId = dataUser.appUserId;
+    // cek apakah dataUser sudah ada hecKamarOperasiDetail di db
+    var url =
+        'https://fdev-hec.firebaseio.com/hecKamarOperasi/hecKoSummary/$qDate.json?auth=$authToken';
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      // print(extractedData);
+      if (extractedData == null || extractedData.isEmpty) {
+        // belum ada, create dan tambahkan user ke list
+        await http.patch(
+          'https://fdev-hec.firebaseio.com/hecKamarOperasi/hecKoSummary.json?auth=$authToken',
+          body: json.encode({
+            qDate: {'hecKoTotal': 1}
+          }),
+        );
+        await http.post(
+          'https://fdev-hec.firebaseio.com/hecKamarOperasi/hecKoDetailDev.json?auth=$authToken',
+          body: json.encode({
+            'hecKoUserId': qAppUserId,
+            'hecKoJenisTindakan': 'Operasi Mata',
+            'hecKoKodeBooking': dataUser.noBpjs,
+            'hecKoKodePoli': 'MAT',
+            'hecKoNamaPoli': 'MATA',
+            'hecKoTanggalOperasi': qDate,
+            'hecKoTerlaksana': 1,
+            'hecKoUserNoBpjs': dataUser.noBpjs,
+          }),
+        );
+        // update flagActivity jadi antri poli
+        await http.patch(
+          'https://fdev-hec.firebaseio.com/appUsers/$qAppUserId.json?auth=$authToken',
+          body: json.encode({'flagActivity': 'antri kamar operasi'}),
+        );
+        // add data to fbHecc
+        // print(
+        //     'https://fbhecc.firebaseio.com/hecKamarOperasi.json?auth=$authToken2');
+        await http.post(
+          'https://fbhecc.firebaseio.com/hecKamarOperasi.json?auth=$authToken2',
+          body: json.encode({
+            'hecKoUserId': qAppUserId,
+            'hecKoJenisTindakan': 'Operasi Mata',
+            'hecKoKodeBooking': dataUser.noBpjs,
+            'hecKoKodePoli': 'MAT',
+            'hecKoNamaPoli': 'MATA',
+            'hecKoTanggalOperasi': qDate,
+            'hecKoTerlaksana': 1,
+            'hecKoUserNoBpjs': dataUser.noBpjs,
+          }),
+        );
+        return;
+      }
+      // hecTanggalAntri sudah ada di db, cek apakah user sudah antri atau belum
+      final response2 = await http.get(
+          'https://fdev-hec.firebaseio.com/hecKamarOperasi/hecKoDetailDev/$qAppUserId.json?auth=$authToken');
+      final extractedData2 =
+          json.decode(response2.body) as Map<String, dynamic>;
+      if (extractedData2 != null) {
+        print('user sudah antri kamar operasi');
+        return;
+      }
+      // add new user to existing hecTanggalAntri
+      await http.post(
+        'https://fdev-hec.firebaseio.com/hecKamarOperasi/hecKoDetailDev.json?auth=$authToken',
+        body: json.encode({
+          'hecKoUserId': qAppUserId,
+          'hecKoJenisTindakan': 'Operasi Mata',
+          'hecKoKodeBooking': dataUser.noBpjs,
+          'hecKoKodePoli': 'MAT',
+          'hecKoNamaPoli': 'MATA',
+          'hecKoTanggalOperasi': qDate,
+          'hecKoTerlaksana': 1,
+          'hecKoUserNoBpjs': dataUser.noBpjs,
+        }),
+      );
+      // update totalAntri on hecAntrianSummary
+      await http.patch(
+          'https://fdev-hec.firebaseio.com/hecKamarOperasi/hecKoSummary/$qDate.json?auth=$authToken',
+          body: json.encode({'hecKoTotal': extractedData['hecKoTotal'] + 1}));
+      // update flagActivity jadi antri poli
+      await http.patch(
+          'https://fdev-hec.firebaseio.com/appUsers/$qAppUserId.json?auth=$authToken',
+          body: json.encode({'flagActivity': 'antri kamar operasi'}));
+
+      // add data to fbHecc
+      await http.post(
+        'https://fbhecc.firebaseio.com/hecKamarOperasi.json?auth=$authToken2',
+        body: json.encode({
+          'hecKoUserId': qAppUserId,
+          'hecKoJenisTindakan': 'Operasi Mata',
+          'hecKoKodeBooking': dataUser.noBpjs,
+          'hecKoKodePoli': 'MAT',
+          'hecKoNamaPoli': 'MATA',
+          'hecKoTanggalOperasi': qDate,
+          'hecKoTerlaksana': 1,
+          'hecKoUserNoBpjs': dataUser.noBpjs,
+        }),
+      );
+      notifyListeners();
+    } catch (error) {
+      print('setKamarOperasi, $error');
+      throw (error);
+    }
   }
 
   Future<void> fetchAndSetAntrians(DateTime queryTanggalAntri, dataUser) async {
@@ -44,13 +154,13 @@ class Antrians with ChangeNotifier {
       // print(extractedData);
       if (extractedData == null || extractedData.isEmpty) {
         // belum ada hecTanggalAntri, create dan tambahkan user ke list
-        await http.put(
+        await http.patch(
           'https://fdev-hec.firebaseio.com/hecAntrian/hecAntrianSummary.json?auth=$authToken',
           body: json.encode({
             qDate: {'hecAntrianTotal': 1}
           }),
         );
-        await http.put(
+        await http.patch(
           'https://fdev-hec.firebaseio.com/hecAntrian/hecAntrianDetail.json?auth=$authToken',
           body: json.encode({
             qAppUserId: {

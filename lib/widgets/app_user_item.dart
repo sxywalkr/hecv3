@@ -39,9 +39,17 @@ class AppUserItem extends StatelessWidget {
           //     color: Theme.of(context).accentColor,
           //   ),
           // ),
-          title: Text(
-            appUser.nama,
-            textAlign: TextAlign.center,
+          title: Column(
+            children: [
+              Text(
+                '${appUser.nama} - ${appUser.statusAppUser}',
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                'Nomor Rekam Medik : ${appUser.noRmHec}',
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
           // trailing: IconButton(
           //   icon: Icon(Icons.shopping_cart),

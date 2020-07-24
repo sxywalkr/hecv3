@@ -25,17 +25,6 @@ class Antrian with ChangeNotifier {
     return [..._item];
   }
 
-  // List<AntrianItem> get getItem {
-  //   return [..._item];
-  // }
-
-  // AntrianItem findById(String id) {
-  //   print(_item);
-  //   // fetchAntrian(id);
-  //   // print(_item);
-  //   return _item.first;
-  // }
-
   Future<void> fetchAntrian(String appUserId) async {
     final filterString = 'orderBy="appUserId"&equalTo="$appUserId"';
     var url =
@@ -65,6 +54,10 @@ class Antrian with ChangeNotifier {
       throw (error);
     }
   }
+
+  // Future<void> setKamarOperasi(String appUserId) async {
+
+  // }
 
   // Future<void> fetchAntrianOk1(DateTime tanggalAntri) async {
   //   final filterString = 'orderBy="tanggal"&equalTo="$tanggalAntri"';

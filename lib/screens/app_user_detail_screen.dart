@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import '../screens/products_overview_screen.dart';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,11 @@ import 'package:provider/provider.dart';
 import '../providers/antrian.dart';
 import '../providers/antrians.dart';
 import '../providers/app_users.dart';
+
+enum FilterOptions {
+  DaftarAntrian,
+  DaftarKamarOperasi,
+}
 
 class AppUserDetailScreen extends StatefulWidget {
   static const routeName = '/app-user-detail';
@@ -22,7 +28,7 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
   @override
   void didChangeDependencies() {
     // print('init');
-    // print(ModalRoute.of(context).settings.arguments as String);
+    // print('AppUserDetailScreen ${ModalRoute.of(context).settings.arguments}');
     if (_isInit) {
       setState(() {
         _isLoading = true;
@@ -36,25 +42,72 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
     super.didChangeDependencies();
   }
 
-  void _presentDatePicker(a) {
+  Future<void> _presentDatePicker(ctx, a, b) async {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(2020),
             lastDate: DateTime.now().add(Duration(days: 7)))
-        .then((e) {
+        .then((e) async {
       if (e == null) {
         return;
       }
-      Provider.of<Antrians>(context, listen: false).fetchAndSetAntrians(e, a);
       setState(() {
-        _selectAntriDate = e;
+        _isLoading = true;
       });
+      try {
+        if (b == 'antri') {
+          await Provider.of<Antrians>(context, listen: false)
+              .fetchAndSetAntrians(e, a);
+          //     .then((_) {
+          //   Scaffold.of(context).hideCurrentSnackBar();
+          //   Scaffold.of(context).showSnackBar(
+          //     SnackBar(
+          //       content: Text('Sukses menambah data kamar operasi'),
+          //       duration: Duration(seconds: 5),
+          //     ),
+          //   );
+          // });
+        } else if (b == 'ko') {
+          await Provider.of<Antrians>(context, listen: false)
+              .setKamarOperasi(e, a);
+          //     .then((_) {
+          //   Scaffold.of(context).hideCurrentSnackBar();
+          //   Scaffold.of(context).showSnackBar(
+          //     SnackBar(
+          //       content: Text('Sukses menambah data kamar operasi'),
+          //       duration: Duration(seconds: 5),
+          //     ),
+          //   );
+          // });
+        }
+      } catch (error) {
+        await showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('Error occurred'),
+            content: Text('Something went wrong. $error'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      }
     });
+    setState(() {
+      _isLoading = false;
+    });
+    // Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    // final scaffold = Scaffold.of(context);
     final itemId = ModalRoute.of(context).settings.arguments as String;
     final loadedItem = Provider.of<AppUsers>(
       context,
@@ -64,14 +117,33 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          loadedItem.nama,
-        ),
+        title: Text(loadedItem.nama),
         actions: [
-          IconButton(
-            icon: Icon(Icons.date_range),
-            onPressed: () => _presentDatePicker(loadedItem),
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.date_range),
+          //   onPressed: () => _presentDatePicker(loadedItem, 'antri'),
+          // ),
+          PopupMenuButton(
+            onSelected: (FilterOptions selectedValue) {
+              setState(() {
+                if (selectedValue == FilterOptions.DaftarAntrian) {
+                  _presentDatePicker(context, loadedItem, 'antri');
+                } else if (selectedValue == FilterOptions.DaftarKamarOperasi) {
+                  _presentDatePicker(context, loadedItem, 'ko');
+                }
+              });
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: Text('Daftar Antrian'),
+                value: FilterOptions.DaftarAntrian,
+              ),
+              PopupMenuItem(
+                child: Text('Daftar Kamar Operasi'),
+                value: FilterOptions.DaftarKamarOperasi,
+              )
+            ],
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -93,7 +165,14 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
               ),
             ),
             Text(
-              'Nomor KTP : ${loadedItem.noKtp}',
+              'App User Id : ${loadedItem.appUserId}',
+              style: TextStyle(
+                // color: Colors.grey,
+                fontSize: 14,
+              ),
+            ),
+            Text(
+              'Nomor KTP : ${loadedItem.noRmHec}',
               style: TextStyle(
                 // color: Colors.grey,
                 fontSize: 14,
@@ -117,21 +196,12 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
               ),
             ),
             SizedBox(height: 10),
-            Text(
-              _selectAntriDate == null
-                  ? 'Tanggal Antri Poli : -'
-                  : 'Tanggal Antri Poli : ${DateFormat.yMMMd().format(_selectAntriDate)}',
-              style: TextStyle(
-                // color: Colors.grey,
-                fontSize: 14,
-              ),
+            Consumer<Antrian>(
+              builder: (context, antrian, child) => Text(
+                  antrian.item == null || antrian.item.isEmpty
+                      ? ''
+                      : 'Tanggal Antri : ${antrian.item[0].tanggalAntri}'),
             ),
-            // SizedBox(height: 10),
-            // Text('Nomor Antri: ${loadedAntrian[0].nomorAntri}'),
-            // Consumer<Antrian>(
-            //   builder: (context, antrian, child) => Text(
-            //       'Nomor Antri : ${antrian.item.map((e) => e.nomorAntri)}'),
-            // ),
             Consumer<Antrian>(
               builder: (context, antrian, child) => Text(
                   antrian.item == null || antrian.item.isEmpty

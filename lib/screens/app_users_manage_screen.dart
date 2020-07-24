@@ -16,7 +16,7 @@ class AppUsersManageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Application User'),
+        title: Text('List HEC User'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),

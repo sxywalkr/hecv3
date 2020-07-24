@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
           update: (ctx, auth, prevAppUsers) => Antrians(
             auth.token,
             auth.userId,
+            auth.token2,
             prevAppUsers == null ? [] : prevAppUsers.antriansItem,
           ),
         ),
@@ -70,28 +71,6 @@ class MyApp extends StatelessWidget {
             prevAppUsers == null ? [] : prevAppUsers.item,
           ),
         ),
-        // ChangeNotifierProxyProvider<Auth, Products>(
-        //   // create: (_) => Products(null, null),
-        //   update: (ctx, auth, prevProducts) => Products(
-        //     auth.token,
-        //     auth.userId,
-        //     prevProducts == null ? [] : prevProducts.items,
-        //   ),
-        // ),
-        // ChangeNotifierProvider.value(
-        //   value: Cart(),
-        // ),
-        // ChangeNotifierProxyProvider<Auth, Orders>(
-        //   // create: (_) => Products(null, null),
-        //   update: (ctx, auth, prevOrders) => Orders(
-        //     auth.token,
-        //     auth.userId,
-        //     prevOrders == null ? [] : prevOrders.orders,
-        //   ),
-        // ),
-        // ChangeNotifierProvider.value(
-        //   value: Orders(),
-        // ),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(

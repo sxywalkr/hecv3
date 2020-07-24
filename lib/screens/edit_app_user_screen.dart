@@ -35,13 +35,13 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
 
   var _initValues = {
     'nama': '',
-    'email': '',
+    'email': '@hec.com',
     'noRmHec': '',
-    'noKtp': '',
-    'noBpjs': '',
-    'noHape': '',
-    'gender': '',
-    'alamat': '',
+    'noKtp': '-',
+    'noBpjs': '000',
+    'noHape': '-',
+    'gender': 'Pria',
+    'alamat': 'Gowa',
     'tanggalLahir': 'Jan 1, 1990',
     'statusAppUser': 'BPJS',
     'flagActivity': 'idle',
@@ -138,7 +138,7 @@ class _EditAppUserScreenState extends State<EditAppUserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Berita'),
+        title: Text('Edit User'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.save),
