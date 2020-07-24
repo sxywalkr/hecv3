@@ -7,8 +7,9 @@ import '../widgets/app_users_grid.dart';
 // import '../providers/cart.dart';
 import '../providers/app_users.dart';
 
-enum FilterOptions {
-  Favorites,
+enum UserFilterOptions {
+  AntrianPoli,
+  KamarOperasi,
   All,
 }
 
@@ -53,29 +54,37 @@ class _AppUsersOverviewScreenState extends State<AppUsersOverviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Overview App User'),
-        // actions: <Widget>[
-        //   PopupMenuButton(
-        //     onSelected: (FilterOptions selectedValue) {
-        //       setState(() {
-        //         if (selectedValue == FilterOptions.Favorites) {
-        //           _showOnlyFav = true;
-        //         } else {
-        //           _showOnlyFav = false;
-        //         }
-        //       });
-        //     },
-        //     itemBuilder: (_) => [
-        //       PopupMenuItem(
-        //           child: Text('Only Favorites'),
-        //           value: FilterOptions.Favorites),
-        //       PopupMenuItem(
-        //         child: Text('Show All'),
-        //         value: FilterOptions.All,
-        //       )
-        //     ],
-        //     icon: Icon(Icons.more_vert),
-        //   ),
-        // ],
+        actions: <Widget>[
+          PopupMenuButton(
+            onSelected: (UserFilterOptions selectedValue) {
+              setState(() {
+                if (selectedValue == UserFilterOptions.AntrianPoli) {
+                  Provider.of<AppUsers>(context, listen: false)
+                      .fetchAndSetAppUsers('antri poli');
+                } else if (selectedValue == UserFilterOptions.KamarOperasi) {
+                  Provider.of<AppUsers>(context, listen: false)
+                      .fetchAndSetAppUsers('antri kamar operasi');
+                } else {
+                  Provider.of<AppUsers>(context, listen: false)
+                      .fetchAndSetAppUsers();
+                }
+              });
+            },
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                  child: Text('Show All'), value: UserFilterOptions.All),
+              PopupMenuItem(
+                child: Text('Antri Poli'),
+                value: UserFilterOptions.AntrianPoli,
+              ),
+              PopupMenuItem(
+                child: Text('Kamar Operasi'),
+                value: UserFilterOptions.KamarOperasi,
+              )
+            ],
+            icon: Icon(Icons.more_vert),
+          ),
+        ],
       ),
       drawer: AppDrawer(),
       body: _isLoading

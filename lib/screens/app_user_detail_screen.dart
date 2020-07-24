@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import '../screens/products_overview_screen.dart';
 
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/antrian.dart';
@@ -13,38 +13,38 @@ enum FilterOptions {
   DaftarKamarOperasi,
 }
 
-class AppUserDetailScreen extends StatefulWidget {
+class AppUserDetailScreen extends StatelessWidget {
   static const routeName = '/app-user-detail';
 
-  @override
-  _AppUserDetailScreenState createState() => _AppUserDetailScreenState();
-}
+//   @override
+//   _AppUserDetailScreenState createState() => _AppUserDetailScreenState();
+// }
 
-class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
-  DateTime _selectAntriDate;
-  var _isInit = true;
-  var _isLoading = false;
+// class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
+  // DateTime _selectAntriDate;
+  // var _isInit = true;
+  // var _isLoading = false;
 
-  @override
-  void didChangeDependencies() {
-    // print('init');
-    // print('AppUserDetailScreen ${ModalRoute.of(context).settings.arguments}');
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      Provider.of<Antrian>(context)
-          .fetchAntrian(ModalRoute.of(context).settings.arguments as String)
-          .then((_) => setState(() {
-                _isLoading = false;
-              }));
-    }
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   // print('init');
+  //   // print('AppUserDetailScreen ${ModalRoute.of(context).settings.arguments}');
+  //   // if (_isInit) {
+  //   //   setState(() {
+  //   //     _isLoading = true;
+  //   //   });
+  //   //   Provider.of<Antrian>(context)
+  //   //       .fetchAntrian(ModalRoute.of(context).settings.arguments as String)
+  //   //       .then((_) => setState(() {
+  //   //             _isLoading = false;
+  //   //           }));
+  //   // }
+  //   super.didChangeDependencies();
+  // }
 
   Future<void> _presentDatePicker(ctx, a, b) async {
     showDatePicker(
-            context: context,
+            context: ctx,
             initialDate: DateTime.now(),
             firstDate: DateTime(2020),
             lastDate: DateTime.now().add(Duration(days: 7)))
@@ -52,12 +52,12 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
       if (e == null) {
         return;
       }
-      setState(() {
-        _isLoading = true;
-      });
+      // setState(() {
+      //   _isLoading = true;
+      // });
       try {
         if (b == 'antri') {
-          await Provider.of<Antrians>(context, listen: false)
+          await Provider.of<Antrians>(ctx, listen: false)
               .fetchAndSetAntrians(e, a);
           //     .then((_) {
           //   Scaffold.of(context).hideCurrentSnackBar();
@@ -69,8 +69,7 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
           //   );
           // });
         } else if (b == 'ko') {
-          await Provider.of<Antrians>(context, listen: false)
-              .setKamarOperasi(e, a);
+          await Provider.of<Antrians>(ctx, listen: false).setKamarOperasi(e, a);
           //     .then((_) {
           //   Scaffold.of(context).hideCurrentSnackBar();
           //   Scaffold.of(context).showSnackBar(
@@ -83,7 +82,7 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
         }
       } catch (error) {
         await showDialog(
-          context: context,
+          context: ctx,
           builder: (ctx) => AlertDialog(
             title: Text('Error occurred'),
             content: Text('Something went wrong. $error'),
@@ -99,9 +98,9 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
         );
       }
     });
-    setState(() {
-      _isLoading = false;
-    });
+    // setState(() {
+    //   _isLoading = false;
+    // });
     // Navigator.of(context).pop();
   }
 
@@ -113,6 +112,7 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
       context,
       listen: false,
     ).findById(itemId);
+    Provider.of<Antrian>(context).fetchAntrian(itemId);
     // final loadedAntrian = Provider.of<Antrian>(context, listen: false).item;
 
     return Scaffold(
@@ -125,13 +125,14 @@ class _AppUserDetailScreenState extends State<AppUserDetailScreen> {
           // ),
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
-              setState(() {
-                if (selectedValue == FilterOptions.DaftarAntrian) {
-                  _presentDatePicker(context, loadedItem, 'antri');
-                } else if (selectedValue == FilterOptions.DaftarKamarOperasi) {
-                  _presentDatePicker(context, loadedItem, 'ko');
-                }
-              });
+              // setState(() {
+              if (selectedValue == FilterOptions.DaftarAntrian) {
+                _presentDatePicker(context, loadedItem, 'antri');
+              } else if (selectedValue == FilterOptions.DaftarKamarOperasi) {
+                _presentDatePicker(context, loadedItem, 'ko');
+              }
+              // }
+              // );
             },
             itemBuilder: (context) => [
               PopupMenuItem(

@@ -11,12 +11,13 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userRole = Provider.of<Auth>(context).userRole;
+    final userName = Provider.of<Auth>(context).userName;
 
     return Drawer(
       child: Column(
         children: <Widget>[
           AppBar(
-            title: Text('$userRole'),
+            title: Text('$userName'),
             automaticallyImplyLeading: false,
           ),
           Divider(),

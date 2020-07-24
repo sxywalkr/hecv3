@@ -10,6 +10,7 @@ class Auth with ChangeNotifier {
   String _token2;
   DateTime _expiryDate;
   String _userId;
+  String _userName;
   String _userRole;
   Timer _authTimer;
 
@@ -39,6 +40,10 @@ class Auth with ChangeNotifier {
 
   String get userRole {
     return _userRole;
+  }
+
+  String get userName {
+    return _userName;
   }
 
   Future<void> _authenticate(
@@ -85,6 +90,7 @@ class Auth with ChangeNotifier {
             json.decode(response3.body) as Map<String, dynamic>;
         // print(extractedData3['appUserRole']);
         _userRole = extractedData3['appUserRole'];
+        _userName = extractedData3['nama'];
       }
       // register new user to db and assign role
       if (urlSegment == 'signUp') {
@@ -108,6 +114,7 @@ class Auth with ChangeNotifier {
           }),
         );
         _userRole = 'Anom';
+        _userName = email;
       }
       // print(_userRole);
       // fbHecc
@@ -136,6 +143,7 @@ class Auth with ChangeNotifier {
           'token2': _token2,
           'userId': _userId,
           'userRole': _userRole,
+          'userName': _userName,
           'expiryDate': _expiryDate.toIso8601String()
         },
       );
@@ -171,6 +179,8 @@ class Auth with ChangeNotifier {
     _token = extractedUserData['token'];
     _token2 = extractedUserData['token2'];
     _userId = extractedUserData['userId'];
+    _userRole = extractedUserData['userRole'];
+    _userName = extractedUserData['userName'];
     _expiryDate = expiryDate;
     notifyListeners();
     _autoLogout();
@@ -181,6 +191,8 @@ class Auth with ChangeNotifier {
     _token = null;
     _token2 = null;
     _userId = null;
+    _userRole = null;
+    _userName = null;
     _expiryDate = null;
     if (_authTimer != null) {
       _authTimer.cancel();

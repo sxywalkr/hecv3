@@ -20,9 +20,10 @@ class AppUsers with ChangeNotifier {
     return _items.firstWhere((element) => element.appUserId == id);
   }
 
-  Future<void> fetchAndSetAppUsers([bool filterByUser = false]) async {
-    final filterString =
-        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+  Future<void> fetchAndSetAppUsers([String filterByUser = 'All']) async {
+    final filterString = filterByUser == 'All'
+        ? ''
+        : 'orderBy="flagActivity"&equalTo="$filterByUser"';
     var url =
         'https://fdev-hec.firebaseio.com/appUsers.json?auth=$authToken&$filterString';
     try {
