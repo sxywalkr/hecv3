@@ -1,5 +1,6 @@
 // import 'dart:convert';
 import 'package:flutter/foundation.dart';
+// import 'package:hec/providers/antrian.dart';
 // import 'package:http/http.dart' as http;
 
 class AppUser with ChangeNotifier {
@@ -16,6 +17,9 @@ class AppUser with ChangeNotifier {
   final String statusAppUser; //BPJS atau UMUM
   final String flagActivity; //status activity appUser
   final String appUserRole;
+  // Map<String, String> antrian;
+  String tanggalAntri;
+  int nomorAntri;
 
   AppUser({
     @required this.appUserId,
@@ -31,5 +35,8 @@ class AppUser with ChangeNotifier {
     @required this.statusAppUser,
     @required this.flagActivity,
     @required this.appUserRole,
+    // this.antrian,
+    this.tanggalAntri,
+    this.nomorAntri,
   });
 }

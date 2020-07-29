@@ -9,6 +9,7 @@ import './screens/edit_berita_screen.dart';
 import './screens/edit_app_user_screen.dart';
 import './screens/app_users_manage_screen.dart';
 import './screens/app_users_overview_screen.dart';
+import './screens/app_users_overview_list_screen.dart';
 // import './screens/products_overview_screen.dart';
 import './screens/app_user_detail_screen.dart';
 // import './screens/cart_screen.dart';
@@ -20,6 +21,7 @@ import './providers/auth.dart';
 import './providers/beritas.dart';
 import './providers/antrian.dart';
 import './providers/antrians.dart';
+import './providers/app_user.dart';
 import './providers/app_users.dart';
 // import './providers/products.dart';
 // import './providers/orders.dart';
@@ -97,6 +99,8 @@ class MyApp extends StatelessWidget {
             AppUsersManageScreen.routeName: (ctx) => AppUsersManageScreen(),
             EditAppUserScreen.routeName: (ctx) => EditAppUserScreen(),
             AppUsersOverviewScreen.routeName: (ctx) => AppUsersOverviewScreen(),
+            AppUsersOverviewListScreen.routeName: (ctx) =>
+                AppUsersOverviewListScreen(),
             AppUserDetailScreen.routeName: (ctx) => AppUserDetailScreen(),
           },
         ),

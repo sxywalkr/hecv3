@@ -5,7 +5,7 @@ import '../providers/auth.dart';
 
 import '../screens/user_beritas_screen.dart';
 import '../screens/app_users_manage_screen.dart';
-import '../screens/app_users_overview_screen.dart';
+import '../screens/app_users_overview_list_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -28,14 +28,16 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed('/');
             },
           ),
-          userRole == 'App Admin' ? Divider() : SizedBox(height: 1),
-          userRole == 'App Admin'
+          userRole == 'App Admin' || userRole == 'Resepsionis'
+              ? Divider()
+              : SizedBox(height: 1),
+          userRole == 'App Admin' || userRole == 'Resepsionis'
               ? ListTile(
                   leading: Icon(Icons.person_pin),
                   title: Text('Overview App User'),
                   onTap: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(AppUsersOverviewScreen.routeName);
+                    Navigator.of(context).pushReplacementNamed(
+                        AppUsersOverviewListScreen.routeName);
                   },
                 )
               : SizedBox(height: 1),

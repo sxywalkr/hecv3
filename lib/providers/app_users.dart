@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'app_user.dart';
 import '../models/http_exception.dart';
+// import '../providers/antrian.dart';
 
 class AppUsers with ChangeNotifier {
   List<AppUser> _items = [];
-
+  // List<Antrian> _antrian = [];
   final String authToken;
   final String userId;
 
-  AppUsers(this.authToken, this.userId, this._items);
+  AppUsers(
+    this.authToken,
+    this.userId,
+    this._items,
+    // this._antrian,
+  );
 
   List<AppUser> get items {
     return [..._items..sort((a, b) => a.nama.compareTo(b.nama))];
@@ -29,34 +35,63 @@ class AppUsers with ChangeNotifier {
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      // print(url);
-      // print(json.decode(response.body));
       if (extractedData == null) {
         return;
       }
+      // print('extractedData > $filterByUser >>> ${extractedData.length}');
       final List<AppUser> loadedAppUsers = [];
-      extractedData.forEach((id, data) {
-        loadedAppUsers.add(AppUser(
-          appUserId: id,
-          nama: data['nama'],
-          email: data['email'],
-          noRmHec: data['noRmHec'],
-          noKtp: data['noKtp'],
-          noBpjs: data['noBpjs'],
-          noHape: data['noHape'],
-          gender: data['gender'],
-          alamat: data['alamat'],
-          tanggalLahir: DateTime.parse(data['tanggalLahir']),
-          statusAppUser: data['statusAppUser'],
-          flagActivity: data['flagActivity'],
-          appUserRole: data['appUserRole'],
-        ));
+      extractedData.forEach((id, data) async {
+        AppUser aa;
+        try {
+          final responseAntrian = await http.get(
+              'https://fdev-hec.firebaseio.com/hecAntrian/hecAntrianDetail.json?auth=$authToken&orderBy="appUserId"&equalTo="$id"');
+          final extractedDataAntrian =
+              json.decode(responseAntrian.body) as Map<String, dynamic>;
+          if (extractedDataAntrian.isNotEmpty) {
+            aa = AppUser(
+              appUserId: id,
+              nama: data['nama'],
+              email: data['email'],
+              noRmHec: data['noRmHec'],
+              noKtp: data['noKtp'],
+              noBpjs: data['noBpjs'],
+              noHape: data['noHape'],
+              gender: data['gender'],
+              alamat: data['alamat'],
+              tanggalLahir: DateTime.parse(data['tanggalLahir']),
+              statusAppUser: data['statusAppUser'],
+              flagActivity: data['flagActivity'],
+              appUserRole: data['appUserRole'],
+              tanggalAntri: extractedDataAntrian[id]['tanggalAntri'],
+              nomorAntri: extractedDataAntrian[id]['nomorAntri'],
+            );
+          } else {
+            aa = AppUser(
+              appUserId: id,
+              nama: data['nama'],
+              email: data['email'],
+              noRmHec: data['noRmHec'],
+              noKtp: data['noKtp'],
+              noBpjs: data['noBpjs'],
+              noHape: data['noHape'],
+              gender: data['gender'],
+              alamat: data['alamat'],
+              tanggalLahir: DateTime.parse(data['tanggalLahir']),
+              statusAppUser: data['statusAppUser'],
+              flagActivity: data['flagActivity'],
+              appUserRole: data['appUserRole'],
+            );
+          }
+          loadedAppUsers.add(aa);
+          _items = loadedAppUsers;
+          notifyListeners();
+        } catch (error) {
+          print('responseAntrian >>> $error');
+          // throw (error);
+        }
       });
-      _items = loadedAppUsers;
-
-      notifyListeners();
     } catch (error) {
-      print(error);
+      print('fetchAndSetAppUsers >>> $error');
       throw (error);
     }
   }

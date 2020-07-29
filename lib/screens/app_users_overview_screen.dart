@@ -6,6 +6,7 @@ import '../widgets/app_users_grid.dart';
 // import './cart_screen.dart';
 // import '../providers/cart.dart';
 import '../providers/app_users.dart';
+import '../providers/auth.dart';
 
 enum UserFilterOptions {
   AntrianPoli,
@@ -39,11 +40,20 @@ class _AppUsersOverviewScreenState extends State<AppUsersOverviewScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<AppUsers>(context)
-          .fetchAndSetAppUsers()
-          .then((_) => setState(() {
-                _isLoading = false;
-              }));
+      var userRole = Provider.of<Auth>(context).userRole;
+      if (userRole == 'Anom') {
+        Provider.of<AppUsers>(context)
+            .fetchAndSetAppUsers()
+            .then((_) => setState(() {
+                  _isLoading = false;
+                }));
+      } else if (userRole == 'App Admin' || userRole == 'Resepsionis') {
+        Provider.of<AppUsers>(context)
+            .fetchAndSetAppUsers('antri poli')
+            .then((_) => setState(() {
+                  _isLoading = false;
+                }));
+      }
     }
     _isInit = false;
     super.didChangeDependencies();
