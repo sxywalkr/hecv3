@@ -6,6 +6,7 @@ import '../providers/auth.dart';
 import '../screens/user_beritas_screen.dart';
 import '../screens/app_users_manage_screen.dart';
 import '../screens/app_users_overview_list_screen.dart';
+import '../screens/hec_layanan_manage_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -60,6 +61,17 @@ class AppDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context)
                         .pushReplacementNamed(UserBeritasScreen.routeName);
+                  },
+                )
+              : SizedBox(height: 1),
+          userRole == 'App Admin' ? Divider() : SizedBox(height: 1),
+          userRole == 'App Admin'
+              ? ListTile(
+                  leading: Icon(Icons.edit),
+                  title: Text('Manage Layanan'),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(HecLayananManageScreen.routeName);
                   },
                 )
               : SizedBox(height: 1),

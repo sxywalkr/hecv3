@@ -12,6 +12,8 @@ import './screens/app_users_overview_screen.dart';
 import './screens/app_users_overview_list_screen.dart';
 // import './screens/products_overview_screen.dart';
 import './screens/app_user_detail_screen.dart';
+import './screens/hec_layanan_manage_screen.dart';
+import './screens/edit_hec_layanan1_screen.dart';
 // import './screens/cart_screen.dart';
 // import './screens/orders_screen.dart';
 // import './screens/user_products_screen.dart';
@@ -21,8 +23,9 @@ import './providers/auth.dart';
 import './providers/beritas.dart';
 import './providers/antrian.dart';
 import './providers/antrians.dart';
-import './providers/app_user.dart';
 import './providers/app_users.dart';
+import './providers/hec_layanan1s.dart';
+// import './providers/app_user.dart';
 // import './providers/products.dart';
 // import './providers/orders.dart';
 // import './providers/cart.dart';
@@ -73,6 +76,14 @@ class MyApp extends StatelessWidget {
             prevAppUsers == null ? [] : prevAppUsers.item,
           ),
         ),
+        ChangeNotifierProxyProvider<Auth, HecLayanan1s>(
+          // create: (_) => Products(null, null),
+          update: (ctx, auth, prevDatas) => HecLayanan1s(
+            auth.token,
+            auth.userId,
+            prevDatas == null ? [] : prevDatas.items,
+          ),
+        ),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
@@ -102,6 +113,8 @@ class MyApp extends StatelessWidget {
             AppUsersOverviewListScreen.routeName: (ctx) =>
                 AppUsersOverviewListScreen(),
             AppUserDetailScreen.routeName: (ctx) => AppUserDetailScreen(),
+            HecLayananManageScreen.routeName: (ctx) => HecLayananManageScreen(),
+            EditHecLayanan1Screen.routeName: (ctx) => EditHecLayanan1Screen(),
           },
         ),
       ),

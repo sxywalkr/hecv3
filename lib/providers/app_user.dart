@@ -17,7 +17,6 @@ class AppUser with ChangeNotifier {
   final String statusAppUser; //BPJS atau UMUM
   final String flagActivity; //status activity appUser
   final String appUserRole;
-  // Map<String, String> antrian;
   String tanggalAntri;
   int nomorAntri;
 
@@ -35,7 +34,6 @@ class AppUser with ChangeNotifier {
     @required this.statusAppUser,
     @required this.flagActivity,
     @required this.appUserRole,
-    // this.antrian,
     this.tanggalAntri,
     this.nomorAntri,
   });
