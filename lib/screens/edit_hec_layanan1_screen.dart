@@ -37,7 +37,7 @@ class _EditLayanan1ScreenState extends State<EditHecLayanan1Screen> {
     'harga2HecLayanan1': '0',
     'jumlahHecLayanan1': '0',
     'kodeBpjsHecLayanan1': '000',
-    'tglBeliHecLayanan1': '',
+    'tglBeliHecLayanan1': DateFormat.yMMMd().format(DateTime.now()),
   };
 
   var _isInit = true;

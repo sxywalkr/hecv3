@@ -10,14 +10,13 @@ import './screens/edit_app_user_screen.dart';
 import './screens/app_users_manage_screen.dart';
 import './screens/app_users_overview_screen.dart';
 import './screens/app_users_overview_list_screen.dart';
-// import './screens/products_overview_screen.dart';
 import './screens/app_user_detail_screen.dart';
 import './screens/hec_layanan_manage_screen.dart';
 import './screens/edit_hec_layanan1_screen.dart';
-// import './screens/cart_screen.dart';
-// import './screens/orders_screen.dart';
-// import './screens/user_products_screen.dart';
-// import './screens/edit_product_screen.dart';
+import './screens/edit_hec_layanan2_screen.dart';
+import './screens/edit_hec_layanan3_screen.dart';
+import './screens/edit_hec_layanan4_screen.dart';
+import './screens/edit_hec_layanan5_screen.dart';
 
 import './providers/auth.dart';
 import './providers/beritas.dart';
@@ -25,10 +24,10 @@ import './providers/antrian.dart';
 import './providers/antrians.dart';
 import './providers/app_users.dart';
 import './providers/hec_layanan1s.dart';
-// import './providers/app_user.dart';
-// import './providers/products.dart';
-// import './providers/orders.dart';
-// import './providers/cart.dart';
+import './providers/hec_layanan2s.dart';
+import './providers/hec_layanan3s.dart';
+import './providers/hec_layanan4s.dart';
+import './providers/hec_layanan5s.dart';
 
 void main() {
   runApp(MyApp());
@@ -84,6 +83,38 @@ class MyApp extends StatelessWidget {
             prevDatas == null ? [] : prevDatas.items,
           ),
         ),
+        ChangeNotifierProxyProvider<Auth, HecLayanan2s>(
+          // create: (_) => Products(null, null),
+          update: (ctx, auth, prevDatas) => HecLayanan2s(
+            auth.token,
+            auth.userId,
+            prevDatas == null ? [] : prevDatas.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, HecLayanan3s>(
+          // create: (_) => Products(null, null),
+          update: (ctx, auth, prevDatas) => HecLayanan3s(
+            auth.token,
+            auth.userId,
+            prevDatas == null ? [] : prevDatas.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, HecLayanan4s>(
+          // create: (_) => Products(null, null),
+          update: (ctx, auth, prevDatas) => HecLayanan4s(
+            auth.token,
+            auth.userId,
+            prevDatas == null ? [] : prevDatas.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, HecLayanan5s>(
+          // create: (_) => Products(null, null),
+          update: (ctx, auth, prevDatas) => HecLayanan5s(
+            auth.token,
+            auth.userId,
+            prevDatas == null ? [] : prevDatas.items,
+          ),
+        ),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
@@ -115,6 +146,10 @@ class MyApp extends StatelessWidget {
             AppUserDetailScreen.routeName: (ctx) => AppUserDetailScreen(),
             HecLayananManageScreen.routeName: (ctx) => HecLayananManageScreen(),
             EditHecLayanan1Screen.routeName: (ctx) => EditHecLayanan1Screen(),
+            EditHecLayanan2Screen.routeName: (ctx) => EditHecLayanan2Screen(),
+            EditHecLayanan3Screen.routeName: (ctx) => EditHecLayanan3Screen(),
+            EditHecLayanan4Screen.routeName: (ctx) => EditHecLayanan4Screen(),
+            EditHecLayanan5Screen.routeName: (ctx) => EditHecLayanan5Screen(),
           },
         ),
       ),
