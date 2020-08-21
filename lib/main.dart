@@ -17,6 +17,7 @@ import './screens/edit_hec_layanan2_screen.dart';
 import './screens/edit_hec_layanan3_screen.dart';
 import './screens/edit_hec_layanan4_screen.dart';
 import './screens/edit_hec_layanan5_screen.dart';
+import './screens/rekam_medik_screen.dart';
 
 import './providers/auth.dart';
 import './providers/beritas.dart';
@@ -135,6 +136,7 @@ class MyApp extends StatelessWidget {
                           ? SplashScreen()
                           : AuthScreen(),
                 ),
+          debugShowCheckedModeBanner: false,
           routes: {
             UserBeritasScreen.routeName: (ctx) => UserBeritasScreen(),
             EditBeritaScreen.routeName: (ctx) => EditBeritaScreen(),
@@ -150,6 +152,7 @@ class MyApp extends StatelessWidget {
             EditHecLayanan3Screen.routeName: (ctx) => EditHecLayanan3Screen(),
             EditHecLayanan4Screen.routeName: (ctx) => EditHecLayanan4Screen(),
             EditHecLayanan5Screen.routeName: (ctx) => EditHecLayanan5Screen(),
+            RekamMedikScreen.routeName: (ctx) => RekamMedikScreen(),
           },
         ),
       ),

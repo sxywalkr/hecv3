@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:hec/providers/app_user.dart';
 // import '../screens/products_overview_screen.dart';
@@ -9,9 +11,12 @@ import '../providers/antrian.dart';
 import '../providers/antrians.dart';
 import '../providers/app_users.dart';
 
+import '../screens/rekam_medik_screen.dart';
+
 enum FilterOptions {
   DaftarAntrian,
   DaftarKamarOperasi,
+  TambahRekamMedik,
 }
 
 class AppUserDetailScreen extends StatelessWidget {
@@ -76,32 +81,67 @@ class AppUserDetailScreen extends StatelessWidget {
             ],
           ),
           actions: [
-            PopupMenuButton(
-              onSelected: (FilterOptions selectedValue) {
-                // setState(() {
-                if (selectedValue == FilterOptions.DaftarAntrian) {
-                  _presentDatePicker(context, loadedItem, 'antri');
-                } else if (selectedValue == FilterOptions.DaftarKamarOperasi) {
-                  _presentDatePicker(context, loadedItem, 'ko');
-                }
-              },
-              itemBuilder: (context) => [
+            PopupMenuButton(onSelected: (dynamic selectedValue) {
+              // setState(() {
+              if (selectedValue == FilterOptions.DaftarAntrian) {
+                _presentDatePicker(context, loadedItem, 'antri');
+              } else if (selectedValue == FilterOptions.DaftarKamarOperasi) {
+                _presentDatePicker(context, loadedItem, 'ko');
+              } else if (selectedValue == FilterOptions.TambahRekamMedik) {
+                Navigator.of(context)
+                    .pushNamed(RekamMedikScreen.routeName, arguments: itemId);
+              }
+            }, itemBuilder: (context) {
+              var list = List<PopupMenuEntry<Object>>();
+              list.add(
                 PopupMenuItem(
                   child: Text('Daftar Antrian'),
                   value: FilterOptions.DaftarAntrian,
                 ),
+              );
+              list.add(
                 PopupMenuItem(
-                  child: Text('Daftar Kamar Operasi'),
+                  child: Text('Kamar Operasi'),
                   value: FilterOptions.DaftarKamarOperasi,
+                ),
+              );
+              list.add(
+                PopupMenuDivider(
+                  height: 10,
+                ),
+              );
+              list.add(
+                PopupMenuItem(
+                  child: Text('Tambah Rekam Medik'),
+                  value: FilterOptions.TambahRekamMedik,
+                ),
+              );
+              return list;
+            }
+                //     =>
+                //     [
+                //   PopupMenuItem(
+                //     child: Text('Daftar Antrian'),
+                //     value: FilterOptions.DaftarAntrian,
+                //   ),
+                //   PopupMenuItem(
+                //     child: Text('Daftar Kamar Operasi'),
+                //     value: FilterOptions.DaftarKamarOperasi,
+                //   ),
+                //   PopupMenuItem(
+                //     child: Text('Tambah Rekam Medik'),
+                //     value: FilterOptions.TambahRekamMedik,
+                //   )
+                // ],
                 )
-              ],
-            )
           ],
         ),
         body: TabBarView(
           children: [
             UserProfile(loadedItem: loadedItem),
-            Icon(Icons.directions_transit),
+            Center(
+              child: Text('Belum ada data rekam medik'),
+            ),
           ],
         ),
       ),
