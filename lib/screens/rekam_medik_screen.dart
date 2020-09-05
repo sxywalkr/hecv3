@@ -1,14 +1,15 @@
-// import 'dart:html';
-
 import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
+// import 'package:hec/providers/rekam_mediks.dart';
 
 import 'package:provider/provider.dart';
 
 import '../providers/hec_layanan1s.dart';
 import '../providers/hec_layanan2s.dart';
+import '../providers/rekam_medik.dart';
+import '../providers/rekam_mediks.dart';
 
 class RekamMedikScreen extends StatefulWidget {
   static const routeName = '/rekam-medik';
@@ -31,6 +32,7 @@ class _RekamMedikScreenState extends State<RekamMedikScreen> {
   }
 
   Widget widgetConsumer(BuildContext context, a) {
+    final cartRekamMedik = Provider.of<RekamMedik>(context, listen: false);
     if (a == 1) {
       return Consumer<HecLayanan1s>(
         builder: (ctx, data, _) => ListView.builder(
@@ -44,7 +46,16 @@ class _RekamMedikScreenState extends State<RekamMedikScreen> {
                   Text(
                     data.items[index].namaHecLayanan1,
                   ),
-                  IconButton(icon: Icon(Icons.check_circle), onPressed: null)
+                  IconButton(
+                      icon: Icon(Icons.check_circle),
+                      onPressed: () {
+                        cartRekamMedik.addItem(
+                          data.items[index].namaHecLayanan1,
+                          data.items[index].namaHecLayanan1,
+                          data.items[index].harga1HecLayanan1,
+                          data.items[index].harga2HecLayanan1,
+                        );
+                      })
                 ],
               ),
             );
@@ -59,15 +70,20 @@ class _RekamMedikScreenState extends State<RekamMedikScreen> {
   Widget build(BuildContext context) {
     final itemId = ModalRoute.of(context).settings.arguments as String;
     print('itemId > $itemId');
-    // final layanan1 =
-    //     Provider.of<HecLayanan1s>(context).fetchAndSetHecLayanan1s();
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Tambah Data Rekam Medik'),
       ),
       body: Center(
-        child: Text('Rekam Medik'),
+        child: Consumer<RekamMedik>(
+          builder: (ctx, data, child) => ListView.builder(
+              itemCount: data.items.length,
+              itemBuilder: (ctx, i) => ListTile(
+                    title: Text('${data.items.values.toList()[i].nama}'),
+                    subtitle: Text('${data.items.values.toList()[i].jumlah}'),
+                  )),
+        ),
       ),
       floatingActionButton: FabCircularMenu(
         ringColor: Colors.purpleAccent,

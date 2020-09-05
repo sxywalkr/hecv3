@@ -5,8 +5,8 @@ class HecLayanan1 with ChangeNotifier {
   final String idHecLayanan1;
   final String namaHecLayanan1;
   final String kodeIcdHecLayanan1;
-  final int harga1HecLayanan1;
-  final int harga2HecLayanan1;
+  final double harga1HecLayanan1;
+  final double harga2HecLayanan1;
   final int jumlahHecLayanan1;
   final String kodeBpjsHecLayanan1;
   final DateTime tglBeliHecLayanan1;

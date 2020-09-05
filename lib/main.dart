@@ -29,6 +29,8 @@ import './providers/hec_layanan2s.dart';
 import './providers/hec_layanan3s.dart';
 import './providers/hec_layanan4s.dart';
 import './providers/hec_layanan5s.dart';
+import './providers/rekam_medik.dart';
+import './providers/rekam_mediks.dart';
 
 void main() {
   runApp(MyApp());
@@ -115,6 +117,17 @@ class MyApp extends StatelessWidget {
             auth.userId,
             prevDatas == null ? [] : prevDatas.items,
           ),
+        ),
+        ChangeNotifierProxyProvider<Auth, RekamMediks>(
+          // create: (_) => Products(null, null),
+          update: (ctx, auth, prevDatas) => RekamMediks(
+            auth.token,
+            auth.userId,
+            prevDatas == null ? [] : prevDatas.rmItems,
+          ),
+        ),
+        ChangeNotifierProvider.value(
+          value: RekamMedik(),
         ),
       ],
       child: Consumer<Auth>(
